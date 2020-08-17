@@ -1,0 +1,30 @@
+kubeadm join 10.50.52.80:6443 --token w1immv.kc70g3s1ol3e34c9 \
+    --discovery-token-ca-cert-hash sha256:ea7f141a5046291f5cdee0ae0533386c5f34f5038abef648034825009c73fb64 --ignore-preflight-errors all
+
+
+
+kubeadm join 10.50.52.149:6443 --token u27eit.5yphc5bk7g54jvla \
+    --discovery-token-ca-cert-hash sha256:5402b8fe469b9141d553c3523754ecc6b2d6e87167d542d916790fcb58a3fab6
+	--ignore-preflight-errors all
+
+
+
+
+
+Clenaup Nodes:
+$ docker rm -f -v $(docker ps -q)
+$ systemctl stop kubelet
+$ systemctl stop docker
+$ find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v
+$ rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd
+$ kubeadm reset 
+$ iptables --flush
+$ sudo rm -rf ~/.kube
+# Reboot A Server
+$ systemctl start docker
+$ systemctl enable --now kubelet
+#############################################################################
+1. Can we run two pods in same worker? like  1. front-end 2. back-end  ==> YES
+2. can we run two pods in using single service pod? 
+3. how do we mention hostname instead of ip adress?
+4. routing different requests to same worker which holding different service? ==> Ingress

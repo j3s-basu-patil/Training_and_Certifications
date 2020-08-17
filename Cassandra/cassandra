@@ -1,0 +1,82 @@
+Cassandra DB (16/12/2019)
+------------------------------------------------
+1. What problem will occur if we have Master-Slave mechanism?
+
+2. data in cassandra represented as column.
+
+3. Any kind of data is stored in cassandra.
+	ex: structured, unstructured and semi-structured.
+
+4. What is CAP properties?
+
+5. No transaction in NOSQL databases.
+	ex: rollback and commit.
+
+6. What is vertical and Horizontally scaling in terms of databases? 
+	Cassandra is Horizontally scalable.
+
+7. Database --> Keyspace.
+	Table --> Column family.
+	
+8. Column Family contains --> Column key (column name), Column value,Column ID and Timestamp.
+
+9. Compaction : Older data get deleted after update, updated data act as data(current available),
+	if we try to fetch same record,	updated data will be shown.
+	
+10. Hint Direcotry?
+
+11. Data center : collection of nodes.
+
+12. Cluster : collection of Data center.
+
+13. Gossip communicaton protocol : Checks status of other nodes.
+
+14. Commit log : first data written to the commit log for durability.
+
+15. Mem-table : like cache. after specified size the data is written, data is flushed into SS table.
+
+16. Bloom-filter : generic data structure is used to check data is present in SStable.
+
+17. Which hashing technique cassandra uses to generate token/bucket id for data distribution between nodes? --> MurMur3
+	MURMUR : multiply, rotate, and actually XOR and bit-shifting operations.
+	
+18. Replication factor : The total no of replicas across the cluster
+
+19. Replication stratergy : determines the nodes where replicas are placed.
+
+20. Simple stratergy for data replication : when we have only one Datacenter.
+
+21. NetworkToplogyStratergy for data replication : when we have multiple Datacenters.
+
+22. Data storage path : data goes to CommitLog --> Mem-table --> SStable (Disk).
+
+23. Data fetch path : Mem-table --> row cache --> Bloom-filter --> partition key cache(if key found directly goes to compression) 
+	--> compression offset --> SStable.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+17/12/2019
+
+1. How to Install Cassandra.
+
+	Pre- requisite : 1. Java 8 and 2. Python 2.7(Higher versions not supported).
+	
+	1. download #DDAC file and unzip from official website.
+	2. goto bin and run cassandra.bat
+	3. go to cqlsh cmd prompt to login cassandra.
+	
+2. Config path : /etc/cassandra/conf/cassandra.yaml 
+
+3. Log files
+	1. System.log , 2. debug.log, 3. gc.log(garbage collections).
+	
+4. data directories
+	1. commit log 2. hint 3. 
+###########################################################################################################
+CREATE KEYSPACE sample WITH replication = {'class' : 'SimpleStratergy','replication_factor':1};
+###########################################################################################################
+use database_name; ex: use sample;
+###########################################################################################################
+CREATE table test ( id int PRIMARY KEY, name TEXT)
+###########################################################################################################
+DESCRIBE TABLE test;
+###########################################################################################################
+

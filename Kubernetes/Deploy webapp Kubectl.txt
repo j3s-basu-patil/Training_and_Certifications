@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------
+1. Create a pod
+--------------------------------------------------------------------------
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+
+
+--------------------------------------------------------------------------
+2. Apply to create POD by kubectl
+--------------------------------------------------------------------------
+$ kubectl apply -f pod.yaml
+
+
+
+
+--------------------------------------------------------------------------
+3. Create a service 
+--------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: NodePort
+  ports:
+  - targetPort: 80						 #pod port
+    port: 80 							 #service port
+    nodePort: 30008 					 #exposed port to user
+  selector:								 #pod selection to expose
+    app: myapp  
+    type: front-end
+
+
+
+
+
+--------------------------------------------------------------------------
+4. Apply to create Service by kubectl
+--------------------------------------------------------------------------
+$ kubectl apply -f svc.yaml
+
+
+--------------------------------------------------------------------------
+5. View in Browser
+--------------------------------------------------------------------------
+<worker_ip>:30008

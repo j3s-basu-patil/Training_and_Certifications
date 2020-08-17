@@ -1,0 +1,250 @@
+Shell Scripting
+============================
+
+
+user->shell->kernel->hardware
+
+->shell is the interface between user and kernel
+->kernel is the interface between the hardware and shell
+
+
+
+shell scripting->grp of unix commands stored in a file
+->shebang (#!)
+
+
+commonly used shells
+===================================
+->bourne shell
+->korn shell
+->c shell
+->terminal based c shell
+->
+
+
+unix commands
+===================
+=> ps to list processes,
+=> sleep,
+=> wc-> word count, 
+=> touch, uniq, kill, more, 
+=> man [man command_name (help)], 
+=> diff -> diffrence of two files, chmod, 
+=> find ->search the file in file system
+=> <  input redirection
+=> >  output redirection
+=> 2>	to redirect errors
+
+ex- /test.sh > text.log 2> test.err [in test.sh->o/p and in test.err->errors]
+ex2- /test.sh >text.log 2>&1  [in text.log both willl be printed]
+
+
+=> >> redirect but don't override the file [append]
+=> which
+=> ssh ->secured shell remote login [ssh ip]
+=> scp ->to copy the file to the remote servre and we can give the path where we want to copy also
+=> sftp ->we can pull file from remote server
+
+
+
+
+$HOME(~)
+$PATH	
+$USER	 
+
+
+Shell variables
+=================================================================
+->Syntax: ${variable} or $variable
+->Assign: set/unset
+->input: read var1 [var2.. varN]  ->each word entered is assigned to each variable and last variable gets the rest of input line
+
+
+eg: read -p "enter full name" first middle last
+ echo "first name: ${first}"
+ echo 
+ 
+->Command substitution : backqoutes(` `)   [executables ex:today=`date`]
+->sequential command : semicolon (;) -->eg: date; /test.sh; date
+->command grouping : ()				-->eg: (date; /test.sh; /date)>test.log
+->comment: #
+->here document: <<STRING (EG: <<EOF)
+->Arithmetic expression: expr ${var1} + ${var2}
+
+Operators
+=====================================================================
+
+
+Control statements (if,case)
+=====================================================================
+syntax:(if)
+
+if [condition]
+then
+	commands....
+elif [condition]
+then	
+	commands...
+else
+	commands..
+fi
+
+
+syntax: (CASE)
+
+case <expression>  in
+	value-1)
+		commands...
+	value-2)
+		commands
+		
+eg: 
+echo "enter the color"; read color
+case $color in 
+	Red | red)
+			echo "you have selected red color " ;;
+	Blue | blue)
+			echo "you have selected blue color" ;;
+	*)
+			echo "selected color not in the list"
+esac
+			
+			
+			
+============================================================================
+cat <<EOF>> read.sh
+echo "enter your full name" read name
+echo "first name: ${first}"
+EOF
+
+
+===========================================================================
+today = date   	[echo today  -->date willbe printed coz it'll treat it as string]
+today =`date`  	[here date will be execurted and then it'll be assigned]
+add = $a+$b 	[o/p =10+15]
+add=`expr $a + $b`	[o/p:- 5]
+
+
+Loop statements, while and until
+===========================================================================
+1.While 
+syntax: while [condition]
+		do
+			commands....
+		done
+eg: cnt=1
+	while [ ${cnt} -le 10]
+	do 
+		if [`expr ${cnt}%2 -eq 0`]
+			echo "even"
+			
+			
+Loop statement -FOR
+=============================================================================
+For ${var} in [list]
+do 
+	commands...
+done
+
+
+For ((expr: condtition;expr))
+do	
+	commands............
+done
+
+eg: for (()cnt=20; cnt>10; cnt--)
+	do
+		echo ${cnt}
+	done
+	
+	
+Loop Statement -SELECT
+================================================================================
+select constructs simple menu from word list
+select Loops till user presses ctrl+d or ctrl+can
+
+
+syntax-
+
+select <variable> in <list>
+do
+	commands....
+done
+
+eg-
+
+PS3="Enter ur choice:"
+
+select f in ls *.sh
+do
+	echo "Entered No: ${REPLY}"
+	more ${f} 2>/dev/null
+done
+
+
+Loop Control-Break,Continue
+==============================================================================================
+
+
+*****anything other than zero is fail
+
+echo $? 
+0
+(prev statement was executed successfully)
+
+echo $?
+1
+(prev statement was failed)
+
+Parameters / Positional Parameters
+===============================================================================================
+>$*  all positional parameters as one string
+>$@  all positional parameters as set of strings (individual set of parameters)
+>$#  the number of positional parameters
+>$1-$9 positional parametrs 1 through 9
+>$?  status of prev executed statement
+>$$  Gives u the current process id
+
+Functions
+=================================================================================================
+>the parameters of the main script are not directly available inside func
+>variables defined inside func are global, unless prefixed with local
+>functions are defined at the beginning of shell script
+>to include the function from a file (like header file)
+
+syntax-
+
+function-name()
+{
+	commands...
+}
+
+
+vi math.sh
+
+add()
+{
+echo "${1} ${2}"
+}
+
+
+bash ->creates new sub shell
+export ->used to export the varialbles to other sub shells (if the varialbe is in parent shell, after exporting the variable still we can access it in sub shell)
+exit -> to exit the shell session
+IFS (delimeter)
+
+
+
+Debugging
+===================================================================================================
+>checks the syntax error
+	baash -n function.sh
+>print every command before executing 
+	$ bash -v <filename>
+>prints every commadn after executing it
+	$ bash -x <filename>
+>options can also be set via she-bang
+	#! /bin/bash -v
+>echo command can also be used fro debugging within script
+	
+	

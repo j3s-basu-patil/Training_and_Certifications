@@ -1,0 +1,20 @@
+###########################################################################################
+Deploy web app -- DOCKER
+###########################################################################################
+1. Pull nginx:alpine image
+2. mkdir for webapp
+3. change directory to webapp
+4. create a index.html root file
+5. create Dockerfile
+	----------------
+	FROM nginx:alpine
+	COPY .	/usr/share/nginx/html
+6. build a Docker image
+7. Publish it
+-------------------------------------------------------------------------------------------
+###########################################################################################
+Deploy web app -- Kubernetes
+###########################################################################################
+1. create a pod and mention image name properly
+2. apply pod
+3. check pods are running properly

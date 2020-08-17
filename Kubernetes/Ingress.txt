@@ -1,0 +1,127 @@
+#########################################################
+INSTALL INGRESS CONTROLLER
+#########################################################
+Mandatory Command : $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.28.0/deploy/static/mandatory.yaml
+Bare Metal : kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.28.0/deploy/static/provider/baremetal/service-nodeport.yaml
+
+Check: kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
+
+
+
+
+
+
+Overview:
+1. create more than one PODS
+2. Create Service for Each PODS [mention only PORT in spec]
+3. Create Ingress for services
+4. Check In Browser
+
+#########################################################
+1. create more than one PODS
+#########################################################
+
+First
+--------------------------------------------------------
+[root@master ~]# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+
+
+
+Second
+---------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webappp-pod
+  labels:
+    app: webapp
+    type: front-end
+spec:
+  containers:
+  - name: webapp-bsp
+    image: j3sbasupatil/myapp:myapp
+
+
+############################################################
+2. Create Service for Each PODS [mention only PORT in spec]
+############################################################
+
+First
+---------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: first-service
+spec:
+  type: NodePort
+  ports:
+  - targetPort: 80
+    port: 80
+  selector:
+    app: myapp
+    type: front-end
+
+
+Second
+---------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: NodePort
+  ports:
+  - targetPort: 80
+    port: 80
+  selector:
+    app: webapp
+    type: front-end
+
+############################################################
+3. Create Ingress for services
+############################################################
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    -
+      http:
+        paths:
+          -
+            backend:
+              serviceName: first-service
+              servicePort: 80
+            path: /first
+          -
+            backend:
+              serviceName: webappp-service
+              servicePort: 80
+            path: /webapp
+
+############################################################
+4. Check In Browser
+############################################################
+[worker-ip]:[ingress-controller-port]/[route-path]
+
+1. How to get ingress-controller-port
+$ kubectl get svc --all-namespaces
+Copy Port of "ingress-nginx" service 80:31873/TCP,443:31705/TCP
+31873 is the Node port 
+
+$curl 10.50.52.77:31783/first
+$curl 10.50.52.77:31783/webapp

@@ -1,0 +1,1060 @@
+Setting up a Kubernetes Clustors
+========================================
+Master
+	Api Server -> POD --> Container --> Image --> GR
+	Cluter Store aka ETCD -> POD --> Container --> Image --> GR
+	Controller Manager -> POD --> Container --> Image --> GR
+	Scheduler -> POD --> Container --> Image --> GR
+
+	Kubelet
+	Docker
+	Kubeadm
+		Kube Prxy -> POD --> Container --> Image --> GR
+
+Notes - 
+	ALL PODS Communicate with Each other using REST API
+		Thus all these pods can be a Separate box
+		Or ALL in ONE.
+
+Node AKA worker
+	Docker	
+	Kubelet
+	Kubeadm
+		Kube Prxy -> POD --> Container --> Image --> GR
+
+Workstation
+	Kubectl ---> config -----> API SERVER					
+		~/.kube/			Cluters
+		CURR_DIR/.kube			Contextx
+						Users
+						Curr-context
+========================================================
+How to setup k8s cluster?
+
+Laptop 		AWS		GC		Auzre		CKA
+
+minikube	eks		gke		AKE		Manual using Kubeadm
+vm		PAAS		PAAS		PAAS
+
+More - https://kubernetes.io/docs/setup/
+
+=============================================
+Setting up cluster using Manual using Kubeadm?
+---------------------------------------------
+What is Kubeadm?
+	https://github.com/kubernetes/kubeadm
+	https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/
+	https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+
+Master  - 13.232.181.85
+https://www.devopsschool.com/blog/setting-up-kubernetes-clusters-using-kubeadm-manual-way-in-rhel-7-centos7/
+
+Docker
+https://www.devopsschool.com/tutorial/docker/install-config/docker-install-commuityedition-centos-rhel.html
+	
+	
+Kubelet	+ Kubeadm + Kubectl
+----------------------------------
+systemctl stop docker
+iptables --flush
+docker rm -f -v $(docker ps -q)
+systemctl start docker
+----------------------------------
+$ sudo swapoff -a
+$ sudo sed -i '/ swap / s/^/#/' /etc/fstab
+# Reboot a machine after that.	
+--------------------------
+$ sudo -s
+-----------------------
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kube*
+EOF
+------------------
+# Set SELinux in permissive mode (effectively disabling it)
+$ setenforce 0
+
+$ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+$ yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+$ systemctl enable --now kubelet
+-----------------------	
+FINALLLLLL
+=================================================
+kubeadm init --ignore-preflight-errors all	
+	
+UBUNTU - https://www.devopsschool.com/blog/setting-up-kubernetes-clusters-using-kubeadm-manual-way-in-ubuntu-16-04-xenial/
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+===================MASTER BECOME A WORKSTATION TOO======================
+$ kubectl cluster-info
+Kubernetes master is running at https://172.31.29.2:6443
+KubeDNS is running at https://172.31.29.2:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+
+----------------------------------------------------------
+kubectl get nodes
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl get nodes
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+kubectl cluster-info
+----------------------------------------------------------
+-----------------------------------------------------------
+		RUN ONLY IN WORKER
+Worker - 13.232.169.219
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.29.2:6443 --token cr7esz.kk6odmspaof0mv3b \
+    --discovery-token-ca-cert-hash sha256:a6e2dc5113c0860ca36914bb7472319a537ca4c849535199b62ccddf1c8ccd03
+
+
+----------------------------------------------------------
+-----------------------------------------------------------
+		CME TO WORK STATION
+
+Master 
+Worker
+Workstation
+
+
+How to run Kubelet manually?
+systemctl  restart kubelet && systemctl enable kubelet
+
+
+ ec2-user]# ps -eaf | grep kubelet
+root      1549     1  9 02:14 ?        00:00:00 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --cgroup-driver=cgroupfs --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.1
+root      2147  1522  0 02:14 pts/0    00:00:00 grep --color=auto kubelet
+[root@ip-172-31-18-102 ec2-user]#
+
+============================================================================
+Kubectl 			--> Config 			--> API Server
+ - Workstation
+ - Tool to connect API Server	- Address of Api Server		- Master
+				- Auth
+				-------CONTENT OF config===================
+				- Clustor(S)
+					Clustor1
+					Clustor2
+					Clustor3
+				- User(s)
+					user1
+					user1
+				- Context(S)
+					Context1 = Clustor1 + user1
+					Context2 = Clustor2 + user2
+				- curr-context
+					ALWAYS ONE
+			---------------------------------------------
+				CURR_DIR/.kube/config
+				~/.kube/config
+
+What is Clustor
+	Node + node + Node
+	Kubectl --> config --> Api -> ETC 	kubelet --
+	-------------------	
+	LAPTOP		 ----------------------
+				MASTEr
+					----------------------
+						Node
+What is Namespaces?
+	Kubernetes view entire k8 clustor as one COMPUTER
+			------- Multiple Server
+
+	aka SUB Clustors
+	Way to divide a resources (CPU+RAM+Storage+Access)
+	In Built Namespaces you get it.
+	--------------------------------
+	default - Any Object which is not part of any Namespaces belong to Default
+	system  - Any Object which is for SYSTEM/Clustor mgmt belong to system  
+	public - Any Object which is common for multple ns - may belong to public 
+	node - Any Object which is node spefic - may belong to node
+
+	What is API Object?
+			PODS - RC - DEP - SVC
+
+Working with Namespaces
+	CREATE Namespaces 
+	$ kubectl create ns dev
+	$ kubectl create ns qa
+
+	VIEW Namespaces
+	$ kubectl get ns
+
+	EDIT Namespasces
+	$ kubectl edit ns qa
+	
+	DESCRIBE Namespasces
+	$ kubectl describe ns qa
+
+	UPDATE Namespaces 
+		NA
+
+	USING NAMESPACES - NA
+
+	DELETE Namespaces
+	$ kubectl delete ns qa
+
+
+What is PID
+	- POD is atomic unit of Compute
+			- Container(S)
+				---- Image(APP) ----- Registry
+	
+to get pods ips:  kubectl get pods -o yaml | grep podIP
+
+	
+Working with PODs
+	Create a POD
+		YAML
+		$ kubectl create -f pod.yaml
+		$ kubectl create -f pod.yaml -n=dev	
+		CMD
+
+	LIST a POD
+	$ kubectl get pods -n=dev
+
+	Describe a POD
+	$ kubectl describe pods hello-pod1 -n=dev
+
+	EDIT A POD
+	$ kubectl edit pods hello-pod1 -n=dev
+
+	Update a POD
+	_NA
+
+	USING a POD
+	How to get inside a container
+	$ kubectl exec -it hello-pod1 /bin/bash
+	$ kubectl exec -it hello-pod1 /bin/bash -n=dev
+
+	How can i access a Pod using browser
+	$ curl http://10.44.0.2
+
+	How can i access a Pod using cmd?
+	$ kubectl exec hello-pod1 df
+
+	DELELETE A POD
+	$ kubectl delete pods hello-pod1  
+	$ kubectl delete pods hello-pod1 -n=dev
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod1
+spec:
+  containers:
+  - name: hello-ctr
+    image: nginx
+    ports:
+    - containerPort: 80
+
+================================================
+What is apiVersion? and How to get to know?
+
+API SERVER ---- Multiple API?
+		------------Call one of the API using kind: 
+		------------ Which version of API??
+
+[ec2-user@ip-172-31-29-2 ~]$ kubectl api-versions
+admissionregistration.k8s.io/v1beta1
+apiextensions.k8s.io/v1beta1
+apiregistration.k8s.io/v1
+apiregistration.k8s.io/v1beta1
+apps/v1
+apps/v1beta1
+apps/v1beta2
+authentication.k8s.io/v1
+authentication.k8s.io/v1beta1
+authorization.k8s.io/v1
+authorization.k8s.io/v1beta1
+autoscaling/v1
+autoscaling/v2beta1
+autoscaling/v2beta2
+batch/v1
+batch/v1beta1
+certificates.k8s.io/v1beta1
+coordination.k8s.io/v1
+coordination.k8s.io/v1beta1
+events.k8s.io/v1beta1
+extensions/v1beta1
+networking.k8s.io/v1
+networking.k8s.io/v1beta1
+node.k8s.io/v1beta1
+policy/v1beta1
+rbac.authorization.k8s.io/v1
+rbac.authorization.k8s.io/v1beta1
+scheduling.k8s.io/v1
+scheduling.k8s.io/v1beta1
+storage.k8s.io/v1
+storage.k8s.io/v1beta1
+v1						FIRST.....
+
+[ec2-user@ip-172-31-29-2 ~]$ kubectl api-resources
+NAME                              SHORTNAMES   APIGROUP                       NAMESPACED   KIND
+bindings                                                                      true         Binding
+componentstatuses                 cs                                          false        ComponentStatus
+configmaps                        cm                                          true         ConfigMap
+endpoints                         ep                                          true         Endpoints
+events                            ev                                          true         Event
+limitranges                       limits                                      true         LimitRange
+namespaces                        ns                                          false        Namespace
+nodes                             no                                          false        Node
+persistentvolumeclaims            pvc                                         true         PersistentVolumeClaim
+persistentvolumes                 pv                                          false        PersistentVolume
+pods                              po                                          true         Pod
+podtemplates                                                                  true         PodTemplate
+replicationcontrollers            rc                                          true         ReplicationController
+resourcequotas                    quota                                       true         ResourceQuota
+secrets                                                                       true         Secret
+serviceaccounts                   sa                                          true         ServiceAccount
+services                          svc                                         true         Service
+mutatingwebhookconfigurations                  admissionregistration.k8s.io   false        MutatingWebhookConfiguration
+validatingwebhookconfigurations                admissionregistration.k8s.io   false        ValidatingWebhookConfiguration
+customresourcedefinitions         crd,crds     apiextensions.k8s.io           false        CustomResourceDefinition
+apiservices                                    apiregistration.k8s.io         false        APIService
+controllerrevisions                            apps                           true         ControllerRevision
+daemonsets                        ds           apps                           true         DaemonSet
+deployments                       deploy       apps                           true         Deployment
+replicasets                       rs           apps                           true         ReplicaSet
+statefulsets                      sts          apps                           true         StatefulSet
+tokenreviews                                   authentication.k8s.io          false        TokenReview
+localsubjectaccessreviews                      authorization.k8s.io           true         LocalSubjectAccessReview
+selfsubjectaccessreviews                       authorization.k8s.io           false        SelfSubjectAccessReview
+selfsubjectrulesreviews                        authorization.k8s.io           false        SelfSubjectRulesReview
+subjectaccessreviews                           authorization.k8s.io           false        SubjectAccessReview
+horizontalpodautoscalers          hpa          autoscaling                    true         HorizontalPodAutoscaler
+cronjobs                          cj           batch                          true         CronJob
+jobs                                           batch                          true         Job
+certificatesigningrequests        csr          certificates.k8s.io            false        CertificateSigningRequest
+leases                                         coordination.k8s.io            true         Lease
+events                            ev           events.k8s.io                  true         Event
+daemonsets                        ds           extensions                     true         DaemonSet
+deployments                       deploy       extensions                     true         Deployment
+ingresses                         ing          extensions                     true         Ingress
+networkpolicies                   netpol       extensions                     true         NetworkPolicy
+podsecuritypolicies               psp          extensions                     false        PodSecurityPolicy
+replicasets                       rs           extensions                     true         ReplicaSet
+ingresses                         ing          networking.k8s.io              true         Ingress
+networkpolicies                   netpol       networking.k8s.io              true         NetworkPolicy
+runtimeclasses                                 node.k8s.io                    false        RuntimeClass
+poddisruptionbudgets              pdb          policy                         true         PodDisruptionBudget
+podsecuritypolicies               psp          policy                         false        PodSecurityPolicy
+clusterrolebindings                            rbac.authorization.k8s.io      false        ClusterRoleBinding
+clusterroles                                   rbac.authorization.k8s.io      false        ClusterRole
+rolebindings                                   rbac.authorization.k8s.io      true         RoleBinding
+roles                                          rbac.authorization.k8s.io      true         Role
+priorityclasses                   pc           scheduling.k8s.io              false        PriorityClass
+csidrivers                                     storage.k8s.io                 false        CSIDriver
+csinodes                                       storage.k8s.io                 false        CSINode
+storageclasses                    sc           storage.k8s.io                 false        StorageClass
+volumeattachments                              storage.k8s.io                 false        VolumeAttachment
+[ec2-user@ip-172-31-29-2 ~]$
+
+How to know a fields of each Api Resource?
+===============================================
+kubectl explain pod
+kubectl explain pod.spec
+kubectl explain pod.spec.container
+
+=====================================================
+How to sclae a PODS?
+==============================================
+Replication Controller
+Replication ==== CAN SCALE
+Controller = PART OF CONTROLLER MGR WHICH MANAGE DESIRE VS ACTUAL.
+
+Create Controller
+	CMD  - NA
+	YAML - 
+
+List Controller
+kubectl get pods -n=dev
+
+Describe Controller
+kubectl describe rc hello-rc -n=dev
+
+Edit Controller
+	CMD
+	$ kubectl edit rc hello-rc -n=dev
+
+	YAML
+Update Controller
+USE 
+	SCALING PODS
+	kubectl edit rc hello-rc -n=dev
+
+DELETE Controller
+
+--------------------------------
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-rc
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-ctr
+        image: nginx
+        ports:
+        - containerPort: 80
+----
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-rc
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-ctr
+        image: nginx
+        ports:
+        - containerPort: 80
+...
+=====================================================================
+How to know all API Resources ?
+$ kubectl api-resources 
+
+How to know GROUP/VERSION all API Resources ?
+$ kubectl api-versions
+
+How to know a fields of each Api Resource?
+===============================================
+kubectl explain pod
+kubectl explain pod.spec
+kubectl explain pod.spec.container
+
+kubectl explain rc
+kubectl explain rc.spec
+kubectl explain rc.spec.container
+
+How to understand YAML?
+================================
+
+
+What About I WANT
+==============================
+Replication ==== CAN SCALE
+Controller = PART OF CONTROLLER MGR WHICH MANAGE DESIRE VS ACTUAL.
+VERSIONING
+ROLLING UPDATE 
+ROLL BACK
+
+----------------------------------------
+		DEPLOYMENT
+=========================================
+13.233.164.248
+
+Replication
+Controller
+versioning
+Rolling Update
+Rollback
+
+Create
+	CMD
+	kubectl create deployment my-dep --image=nginx -n=dev
+			
+	YAML
+	kubectl create -f dep1.yaml -n=dev
+list
+	kubectl get deploy -n=dev
+
+edit
+	kubectl edit deploy -n=dev
+
+describe
+	kubectl describe deploy -n=dev
+
+exaplai
+	kubectl explain deploy
+	kubectl explain deploy.spec
+	kubectl explain deploy.spec.container
+update
+	USING YAML and kubectl apply
+	kubectl apply -f dep2.yaml -n=dev
+
+
+Using 
+	scaling
+	kubectl scale --current-replicas=5 --replicas=7 deployment/my-dep -n=dev
+	
+	Check controller is working or Controller
+	kubectl delete pod  my-dep-c79b8cfbf-dgrm6 -n=dev
+
+
+
+Rolling Update		imageX.1 ===> imageX.2
+
+------------------------------------------------------
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 5
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-pod
+        image: scmgalaxy/nginx-devopsschoolv1
+        ports:
+        - containerPort: 80
+------------------------------------------------
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 4
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-pod
+        image: scmgalaxy/nginx-devopsschoolv2
+        ports:
+        - containerPort: 80
+-----------------------------------------
+ 176  vi dep2.yaml
+  177  kubectl apply -f dep2.yaml -n=dev
+  178  kubectl get deploy -n=dev
+  179  kubectl get pod -n=dev
+  180  kubectl get pod -n=dev -o wide
+  181  curl http://10.44.0.9
+
+
+
+versioning
+Rollback
+
+kubectl help rollout
+Available Commands:
+  history     View rollout history
+  pause       Mark the provided resource as paused
+  restart     Restart a resource
+  resume      Resume a paused resource
+  status      Show the status of the rollout
+  undo        Undo a previous rollout
+
+[ec2-user@ip-172-31-29-2 ~]$ kubectl rollout history deploy hello-deploy -n=dev  ########check version
+deployment.extensions/hello-deploy
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+kubectl rollout undo deploy/hello-deploy --to-revision=1 -n=dev
+
+Delete
+================================================================================
+SERVICES
+================================================================================
+How pods get load balance through service?
+	----- USING LABELS
+How?
+	when label of PODS is Matching with lables of SVC...
+	--------------	
+		Core DNS update SVC with a ENDPOINT(IP:port) of the pod.
+	SERVICE is RANDOM LOAD BALANCER...
+========================================================================
+Lets understand a prb....
+-------------
+P1 - I need a SERVER with SCOPE OF the Service inside a clustor
+
+HUMEN->LB->NODE->ETH0(Physical Address)->KPROXY->SERVICE-> WHICH POD
+---------------------------------------------------------
+
+SERVICE 	SCOPE		TYPE
+		CLUSTOR		CLUSTOR		CLUSTOR
+		NODE		NODE		CLUSTOR+NODE
+		LB		LB		CLUSTOR+NODE+LB
+=========================================================
+How to create a SVC  using
+				CLUSTOR	
+				NODE	
+				LB
+
+Creating 
+using
+
+expose
+	Will craete a SVC.
+	Copy a Label of PODS and Match with SVC
+
+$ kubectl expose deploy hello-deploy --port=80 --target-port=80	# CLUSTOR
+
+--target-port --> POD port
+--port --> Svc port
+
+$ kubectl expose deploy hello-deploy --port=80 --target-port=80 --type=NodePort 	
+# CLUSTOR + NODE	
+
+
+$ kubectl expose deploy hello-deploy --port=80 --target-port=80 --type=LoadBalancer --name=lb
+
+# CLUSTOR + NODE + LB	 		
+			
+
+==============================================================
+Emptydir - Life cycle of this volume is same as POD
+https://www.devopsschool.com/blog/kubernetes-volume-emptydir-explained-with-examples/
+
+HostPath - Life cycle of this volume is NOT same as POD BUT Same NODe
+https://www.devopsschool.com/blog/kubernetes-volume-hostpath-explained-with-examples/
+
+nfs - Life cycle of this volume is NOT same as POD BUT No specific to Node BUT Multiple POD ONE volume
+
+ebs - Life cycle of this volume is NOT same as POD BUT No specific to Node BUT ONE POD ONE volume
+
+https://www.devopsschool.com/blog/persistentvolume-persistentvolumeclaim-volumes-using-hostpath/
+
+Workstation - 35.154.225.31
+
+CLUSTOR ---> ACCES TO AWS TO CREATE volume.
+--------------------------------------------
+	AWS Plugins - 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  containers:
+  - image: scmgalaxy/nginx-devopsschoolv2
+    name: test-container
+    volumeMounts:
+    - mountPath: /cache
+      name: cache-volume
+  volumes:
+  - name: cache-volume
+    emptyDir: {}
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  containers:
+  - image: scmgalaxy/nginx-devopsschoolv2
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-pd
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      # directory location on host
+      path: /data
+      # this field is optional
+      type: DirectoryOrCreate
+
+==============================================================
+Kubernetes Security
+    Authentication - How SHOULD BE ALLOWED TO ACCESS A k8s?
+
+    Client Certificates ========================>
+    Bearer Tokens
+    Authentication Proxy
+    HTTP Basic Authentication
+    OpenID
+    Webhooks
+
+    Authorization - Til what level you should be allowed.
+        AlwaysAllow / AlwaysDeny
+        ABAC (Attribute-Based Access Control)
+        RBAC (Role Based Access Control)========================>
+        Webhook (authorization by remote service)
+
+TYPES OF USER   
+        NORMAL  USER    
+        Service Account
+        =============================================
+https://www.devopsschool.com/tutorial/kubernetes/labs/lab-17-kubernetes-security.html
+13.127.191.7
+
+Clustor Management using Kubeadm
+
+	
+
+openssl genrsa -out employee.key 2048
+
+openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=bitnami"
+
+openssl x509 -req -in employee.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out employee.crt -days 500
+
+config
+	Clustor
+	user
+	Context
+
+kubectl config set-credentials ec2-user --client-certificate=/home/ec2-user/rbac/ec2-user.crt --client-key=/home/ec2-user/rbac/ec2-user.key
+
+
+kubectl config set-context ec2-user-context --cluster=kubernetes --namespace=development --user=ec2-user
+
+kubectl config set-context gce
+
+kubectl config set-context employee-context 
+
+kubectl config set current-context employee-context 
+
+kubectl config set current-context ec2-user-context
+kubectl config set current-context kubernetes-admin@kubernetes
+
+
+
+kubectl --context=employee-context  get pods
+
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+	namespace: development
+	name: developer
+rules:
+- apiGroups: ["", "extensions", "apps"]
+	resources: ["deployments", "replicasets", "pods"]
+	verbs: ["list", "get", "watch", "create", "update", "patch", "delete"]
+# You can use ["*"] for all verbs
+
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+# This role binding allows "jane" to read pods in the "default" namespace.
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: development
+subjects:
+- kind: User
+  name: ec2-user # Name is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+
+1. sericeaccunt
+2. create ClusterRole
+3. create ClusterRoleBinding
+
+serviceaccount
+clusterrole
+
+kubectl create clusterrole admin-role --verb=get,list,watch --resource=pods
+
+
+clusterrolebinding
+
+kubectl create clusterrolebinding cluster-admin1 --clusterrole=admin-role --user=ec2-user --group=development
+=============================
+serviceaccount ---> Get Token --> Secret --> pod
+cluster-a	dmin1
+
+=========================
+Workstation - 13.127.107.60
+====================================
+Kubernetes Server Managment using kubeadm
+================================================
+What is Kubeadm?
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+Easily bootstrap a secure Kubernetes cluster
+
+Why Kubeadm?
+- bootstrap kubernetes clustors
+
+How to install kubeadm?
+ - DONE
+
+What are the features we have in kubeadm?
+  init        Run this command in order to set up the Kubernetes control plane
+- Setup a k8s clustor
+
+  join        Run this on any machine you wish to join an existing cluster
+
+- Adding a node to clustor
+  help        Help about any command
+
+  alpha       Kubeadm experimental sub-commands
+  completion  Output shell completion code for the specified shell (bash or zsh)
+
+
+  version     Print the version of kubeadm
+[root@ip-172-31-29-2 ec2-user]# kubeadm version
+kubeadm version: &version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.3", GitCommit:"2d3c76f9091b6bec110a5e63777c332469e0cba2", GitTreeState:"clean", BuildDate:"2019-08-19T11:11:18Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"linux/amd64"}
+[root@ip-172-31-29-2 ec2-user]#
+
+reset       Run this to revert any changes made to this host by 'kubeadm init' or 'kubeadm join'
+
+[root@ip-172-31-29-2 ec2-user]# kubeadm reset
+[reset] Reading configuration from the cluster...
+[reset] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -oyaml'
+[reset] WARNING: Changes made to this host by 'kubeadm init' or 'kubeadm join' will be reverted.
+[reset] Are you sure you want to proceed? [y/N]: y
+[preflight] Running pre-flight checks
+[reset] Removing info for node "ip-172-31-29-2.ap-south-1.compute.internal" from the ConfigMap "kubeadm-config" in the "kube-system" Namespace
+W1008 02:09:18.669000   10462 removeetcdmember.go:61] [reset] failed to remove etcd member: error syncing endpoints with etc: etcdclient: no available endpoints
+.Please manually remove this etcd member using etcdctl
+[reset] Stopping the kubelet service
+[reset] Unmounting mounted directories in "/var/lib/kubelet"
+[reset] Deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
+[reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
+[reset] Deleting contents of stateful directories: [/var/lib/etcd /var/lib/kubelet /etc/cni/net.d /var/lib/dockershim /var/run/kubernetes]
+
+The reset process does not reset or clean up iptables rules or IPVS tables.
+If you wish to reset iptables, you must do so manually.
+For example:
+iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+If your cluster was setup to utilize IPVS, run ipvsadm --clear (or similar)
+to reset your system's IPVS tables.
+
+The reset process does not clean your kubeconfig files and you must remove them manually.
+Please, check the contents of the $HOME/.kube/config file.
+[root@ip-172-31-29-2 ec2-user]#
+
+
+
+$ iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+$ iptables --flush
+$ sudo rm -rf ~/.kube
+
+
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.29.2:6443 --token 3we8mh.9hkopvlgi0ufm338 \
+    --discovery-token-ca-cert-hash sha256:0bf5dd1cf5d1291aa7546f1951f7ac8c53b76c0c46d436b951cf3c2821f047f3
+
+============================CALICO ==============================================
+  638  curl https://docs.projectcalico.org/v3.9/manifests/calico.yaml -O
+  639  ls
+  640  vi calico.yaml
+  641  more calico.yaml | grep -i POD_CIDR
+  642  cler
+  643  clear
+  644  kubectl apply -f calico.yaml
+  645  history
+
+POD_CIDR="<your-pod-cidr>" sed -i -e "s?192.168.0.0/16?$POD_CIDR?g" calico.yaml
+
+[ec2-user@ip-172-31-29-2 ~]$ kubectl apply -f calico.yaml
+configmap/calico-config created
+customresourcedefinition.apiextensions.k8s.io/felixconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamblocks.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/blockaffinities.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamhandles.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamconfigs.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/bgppeers.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/bgpconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ippools.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/hostendpoints.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/clusterinformations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworksets.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networksets.crd.projectcalico.org created
+clusterrole.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrolebinding.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrole.rbac.authorization.k8s.io/calico-node created
+clusterrolebinding.rbac.authorization.k8s.io/calico-node created
+daemonset.apps/calico-node created
+serviceaccount/calico-node created
+deployment.apps/calico-kube-controllers created
+serviceaccount/calico-kube-controllers created
+
+==================================================================
+  config      Manage configuration for a kubeadm cluster persisted in a ConfigMap in the cluster
+  token       Manage bootstrap tokens
+  upgrade     Upgrade your cluster smoothly to a newer version with this command
+
+kubeadm join 172.31.29.2:6443 --token 3we8mh.9hkopvlgi0ufm338     --discovery-token-ca-cert-hash sha256:0bf5dd1cf5d1291aa7546f1951f7ac8c53b76c0c46d436b951cf3c2821f047f3
+
+kubeadm token
+  create      Create bootstrap tokens on the server
+  delete      Delete bootstrap tokens on the server
+  generate    Generate and print a bootstrap token, but do not create it on the server
+  list        List bootstrap tokens on the server
+
+
+kubeadm help token create
+
+--config
+
+ --config string        Path to a kubeadm configuration file.
+      --description string   A human friendly description of how this token is used.
+      --groups strings       Extra groups that this token will authenticate as when used for authentication. Must match "\\Asys
+
+
+kubeadm token create
+aefv6u.d42j6580i93ipfbq
+
+kubeadm token create --ttl=30000h
+kubeadm token create --ttl=0
+
+[root@ip-172-31-29-2 ec2-user]# kubeadm token create --ttl=30000h
+f0pb0n.g431ih68d08znx1m
+[root@ip-172-31-29-2 ec2-user]# kubeadm token create --ttl=0
+6plufi.bvji2emwuxqjybk8
+[root@ip-172-31-29-2 ec2-user]# kubeadm token list
+TOKEN                     TTL         EXPIRES                USAGES                   DESCRIPTION                                                EXTRA GROUPS
+3we8mh.9hkopvlgi0ufm338   23h         2019-10-09T02:14:47Z   authentication,signing   The default bootstrap token generated by 'kubeadm init'.   system:bootstrappers:kubeadm:default-node-token
+6plufi.bvji2emwuxqjybk8   <forever>   <never>                authentication,signing   <none>                                                     system:bootstrappers:kubeadm:default-node-token
+aefv6u.d42j6580i93ipfbq   23h         2019-10-09T02:35:59Z   authentication,signing   <none>                                                     system:bootstrappers:kubeadm:default-node-token
+f0pb0n.g431ih68d08znx1m   3y          2023-03-11T02:38:46Z   authentication,signing   <none>                                                     system:bootstrappers:kubeadm:default-node-token
+[root@ip-172-31-29-2 ec2-user]#
+
+ 241  kubeadm token list
+  242  kubeadm token delete 3we8mh.9hkopvlgi0ufm338
+  243  kubeadm token delete 6plufi.bvji2emwuxqjybk8
+  244  kubeadm token delete aefv6u.d42j6580i93ipfbq
+  245  clear
+  246  kubeadm token list
+
+kubeadm join 172.31.29.2:6443 --token 3we8mh.9hkopvlgi0ufm338     --discovery-token-ca-cert-hash sha256:0bf5dd1cf5d1291aa7546f1951f7ac8c53b76c0c46d436b951cf3c2821f047f3
+
+kubeadm join 172.31.29.2:6443 --token f0pb0n.g431ih68d08znx1m     --discovery-token-ca-cert-hash sha256:0bf5dd1cf5d1291aa7546f1951f7ac8c53b76c0c46d436b951cf3c2821f047f3- 
+
+token - Only for auth of API server for first time while adding it.
+	Once node added - They share a CERITIFATE
+
+
+  254  kubeadm config
+  255  kubeadm config images
+  256  kubeadm config images list
+  257  kubeadm config list
+  258  kubeadm config lview
+  259  kubeadm config view
+  260  kubeadm config print
+  261  kubeadm config print init-defaults
+
+
+
+  255  kubeadm config images
+  256  kubeadm config images list
+  257  kubeadm config list
+  258  kubeadm config lview
+  259  kubeadm config view
+  260  kubeadm config print
+  261  kubeadm config print init-defaults
+  262  history
+  263  kubeadm
+  264  kubeadm help upgrade
+  265  kubeadm  upgrade plan
+  266  kubeadm  upgrade apply
+  267  kubeadm help upgrade
+  268  clear
+  269  kubeadm upgrade apply v1.16.0
+  270  kubeadm upgrade apply v1.16.0
+  271  kubeadm upgrade apply v1.16.1
+  272  kubeadm version
+  273  yum install -y kubeadm-1.16.1 --disableexcludes=kubernetes
+  274  kubeadm version
+  275  kubeadm upgrade plan
+  276  kubeadm upgrade apply v1.16.1
+  277  exit
+
+
+  684  kubectl
+  685  kubectl cluster-info
+  686  kubectl version
+  687  history
+
+Kubernetes logging 
+https://www.devopsschool.com/tutorial/kubernetes/kubernetes-logging-with-elasticsearch-fluentd-kibana.html
+
+Kubernetes monitoring
+http://devopsschool.com/tutorial/kubernetes/kubernetes-monitoring-with-prometheus-grafana.html
+
+Kubernetes pod monitoring
+https://www.devopsschool.com/tutorial/kubernetes/kubernetes-pod-container-monitoring-with-cadvisor-heapster.html
+
+- heapster
+==============================================
+TROUBLESHOOTING SKILLS
+	- FIND IT OUR COMMANDS / SUB COMMANDS USING HELP
+	- FIND IT OUT LoG
+		- kubectl
+		- docker
+		- kubelet
+		- kubeadm
+	- FIND IT CONFIG
+		- kubectl
+		- docker
+		- kubelet
+		- kubeadm
+
+DESCRIBE
+LOGS
+GET
+EXEC
+ATTACH
+TOP --->heapster
+help
+
+
+
+
+
+
+
+
+
+

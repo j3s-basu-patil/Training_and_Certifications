@@ -1,0 +1,53 @@
+{
+    "_id" : ObjectId("5de90130d19809000b0ef07c"),
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "technology" : [ 
+        "GSM"
+    ],
+    "resourceSpecification" : [],
+    "serviceSpecification" : [],
+    "bundledProductSpecification" : [ 
+        ObjectId("5def555cb622fcf79b64913d"), 
+        ObjectId("5def5eb3b622fcf79b64e522"), 
+        ObjectId("5def5c0ab622fcf79b64cd4b"), 
+        ObjectId("5def4942b622fcf79b642c27"), 
+        ObjectId("5df08680b622fcf79b71728a")
+    ],
+    "relatedParty" : [ 
+        ObjectId("5ce4ffc4a9060a9e09433953")
+    ],
+    "attachment" : [],
+    "name" : "Plan 1",
+    "description" : "Monthly plan 20 SMS, 1 GB Data and 200 mins Voice ",
+    "version" : "1.0",
+    "brand" : "Elisa",
+    "LoB" : "Mobile",
+    "isBundle" : true,
+    "lastUpdate" : ISODate("2019-12-05T13:18:03.122Z"),
+    "lifecycleStatus" : "Launched",
+    "productNumber" : "1",
+    "validFor" : {
+        "startDateTime" : ISODate("2019-12-05T00:00:00.000Z"),
+        "endDateTime" : ISODate("2020-12-26T00:00:00.000Z")
+    },
+    "@type" : "CompositeProductSpecification",
+    "@baseType" : "ProductSpecification",
+    "productSpecCharacteristic" : [],
+    "targetProductSchema" : {
+        "href" : {
+            "serviceActivation" : "http://dcm-apps.192.168.229.171.xip.io/dcm/utility_service/target-system/5d5a3e0355ff76000968ff9c",
+            "serviceSuspension" : "http://dcm-apps.192.168.229.171.xip.io/dcm/utility_service/target-system/5d511c2b528c2425c23f5b1e",
+            "serviceRevokeSuspension" : "http://dcm-apps.192.168.229.171.xip.io/dcm/utility_service/target-system/5d53a93d55ff76000968ff9b",
+            "serviceTermination" : "http://dcm-apps.192.168.229.171.xip.io/dcm/utility_service/target-system/5d5c6b1b55ff76000968ffa0"
+        },
+        "@type" : "DOM",
+        "@schemaLocation" : ""
+    },
+    "productSpecificationRelationship" : [],
+    "createdAt" : ISODate("2019-12-05T13:08:00.585Z"),
+    "updatedAt" : ISODate("2019-12-05T13:18:03.239Z"),
+    "ProductSpecCharActionUse" : [],
+    "__v" : 0
+}

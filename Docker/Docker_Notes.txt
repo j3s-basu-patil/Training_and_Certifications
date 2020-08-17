@@ -1,0 +1,227 @@
+######################################################################
+CONTAINERS
+######################################################################
+
+To search images from docker hub
+# Docker search [image_name]
+----------------------------------------------------------------------
+To run Container 
+# Docker run -it [image_name]
+-it : interactive terminal
+----------------------------------------------------------------------
+To view all running containers
+# docker ps 
+
+----------------------------------------------------------------------
+To view all stopped and running containers
+# docker ps -a
+# docker container ls
+----------------------------------------------------------------------
+Name a Container
+# docker run -itd  --name [name] [container_id / Image_name]
+-itd: detach mode
+----------------------------------------------------------------------
+To go inside container
+# docker exec -it [container_id/container_name]
+
+To get out safely
+Ctrl+P+Q or # type Exit
+ 
+----------------------------------------------------------------------
+To Stop container
+# docker stop [Container]
+To Stop all
+# Docker stop $(docker ps -aq)
+q: prints stopped container id
+
+----------------------------------------------------------------------
+To Start container
+# docker start [Container]
+
+----------------------------------------------------------------------
+To pause container
+# docker pause [container]
+
+----------------------------------------------------------------------
+To unpause container
+# Docker unpause [container]
+
+----------------------------------------------------------------------
+To restart container
+# docker restart [container]
+
+----------------------------------------------------------------------
+To delete container
+# docker rm [container_id]
+To delete all
+# docker rm $( docker ps -aq)
+
+----------------------------------------------------------------------
+To run a container on a localhost port/access from browser
+# docker run -itd --name [attach_container_name] -p 8080:80 [image_name]
+p : publish containers
+----------------------------------------------------------------------
+To check statastics of container
+# docker stat [container]
+
+----------------------------------------------------------------------
+To check layers
+# Docker history [image_name]
+
+----------------------------------------------------------------------
+To check which process are running in container
+# Docker top [container]
+
+----------------------------------------------------------------------
+######################################################################
+PUBLISH CONTAINERS
+######################################################################
+
+Publish a Code through Nginx!
+1. Install wget and unzip cmd
+2.  wget https://www.free-css.com/assets/files/free-css-templates/download/page249/magazee.zip
+3. ls
+4.  unzip magazee.zip -d ./var/lib/docker/devicemapper/mnt/21f298042f86ca2f550df42affbecdc44556c7fc2d5ed369cf58266ffe62d7a8/rootfs/usr/share/nginx/html
+
+directory is created so move all contents to nginx
+	goto inside of unzipped directory and type "mv * .."
+
+5. publish nginx image
+6. Commit
+	docker commit [container] [image{new name if u want}]
+	
+7. push to docker hub
+	1. login :docker login
+	2. push :docker push
+	
+	
+	 # find /home -iname tecmint.txt
+----------------------------------------------------------------------
+######################################################################
+TAR 
+######################################################################
+To create a tar ball of images
+# docker export [image] -o [tar_ball_name].tar
+
+To check tar file --> saved in pwd. 
+
+To import tar ball from anysource
+# docker import tar_ball_name.tar [new name for that]
+
+----------------------------------------------------------------------
+To tag a docker image
+# docker tag [image] [new_name]
+it will create copy of image with new name.
+
+----------------------------------------------------------------------
+######################################################################
+DOCKERFILE
+######################################################################
+
+
+
+
+######################################################################
+DOCKER NETWORK
+######################################################################
+# docker netork ls
+----------------------------------------------------------------------
+To see container details
+# docker inspect [container] --> see network settings and IP address.
+
+----------------------------------------------------------------------
+To create new custom connection
+# Dcoker network create [name] -d bridge
+we can use during container creation
+
+----------------------------------------------------------------------
+To use new connection with container provide as argument
+# Docker run -itd --network my_con -p 8080:80 [imagename]
+
+----------------------------------------------------------------------
+To connect two network for same container
+# Docker run -itd --network my_con -p 8080:80 [container]
+# docker  network connect [container] [conn]
+
+----------------------------------------------------------------------
+To disconnect
+# docker  network disconnect [conn] [container]
+
+
+----------------------------------------------------------------------
+To connect with Host Network
+
+# docker network connect host [container]
+
+----------------------------------------------------------------------
+
+
+######################################################################
+DOCKER PERSISTENT DATA
+######################################################################
+# mkdir volume123
+
+Mounting volume123 to container
+# Docker run -itd  -v [/root/volume123:/data [image]]
+
+-v = volume 
+here data folder is created by container and this is optional.
+
+1. go to inside container 
+2. create a file 
+3. come out of the container 
+4. files are available in host machine also.
+
+----------------------------------------------------------------------
+To list volumes
+# docker volume ls
+
+
+
+
+
+
+
+
+#CHALLENGES
+-----------------------
+1. Once published some code with nginx server, deleted it , published different code, but in browser it is showing old code.
+2. Deploy code through Docker file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,462 @@
+------------------------------Plan 1--------------------------------
+{
+    "_id" : ObjectId("5de90130d19809000b0ef07d"),
+    "allowedProductAction" : {
+        "channels" : [ 
+            {
+                "name" : "CRM",
+                "allowedActionType" : [ 
+                    "add", 
+                    "modify", 
+                    "delete", 
+                    "nochange"
+                ]
+            }, 
+            {
+                "name" : "Selfcare",
+                "allowedActionType" : [ 
+                    "add", 
+                    "modify", 
+                    "nochange"
+                ]
+            }, 
+            {
+                "name" : "Kiosk",
+                "allowedActionType" : [ 
+                    "add", 
+                    "nochange"
+                ]
+            }, 
+            {
+                "name" : "Webshop",
+                "allowedActionType" : [ 
+                    "add"
+                ]
+            }
+        ]
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [ 
+        ObjectId("5d3888ad83ba2e1cba2de710"), 
+        ObjectId("5d3888c183ba2e1cba2de753")
+    ],
+    "category" : [ 
+        ObjectId("5cfa51b2a9060a9e0960bae5"), 
+        ObjectId("5d0ca89fa9060a9e0988c380")
+    ],
+    "agreement" : [ 
+        ObjectId("5d3eb34d5a59cd197efceeea")
+    ],
+    "marketSegment" : [ 
+        ObjectId("5d4bdbff528c2425c23289b5"), 
+        ObjectId("5d4beeb9528c2425c232c3e4")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852"), 
+        ObjectId("5d38892b83ba2e1cba2de87b"), 
+        ObjectId("5d38893c83ba2e1cba2de8a7"), 
+        ObjectId("5d38894783ba2e1cba2de8c4")
+    ],
+    "attachment" : [],
+    "productOfferingTerm" : [ 
+        ObjectId("5d3887e883ba2e1cba2de4e6"), 
+        ObjectId("5d3887f883ba2e1cba2de512")
+    ],
+    "bundledProductOffering" : [],
+    "name" : "Plan 1",
+    "description" : "Plan 1",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2019-12-05T00:00:00.000Z"),
+        "endDateTime" : ISODate("2020-12-06T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-01-29T13:27:29.513Z"),
+    "serviceLevelAgreement" : ObjectId("5d3e94e85a59cd197efce25e"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "createdAt" : ISODate("2019-12-05T13:30:01.132Z"),
+    "updatedAt" : ISODate("2019-12-05T13:30:01.132Z"),
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079"), 
+        ObjectId("5de8e60ad19809000b0ef06c"), 
+        ObjectId("5de90130d19809000b0ef076"), 
+        ObjectId("5de90130d19809000b0ef078"), 
+        ObjectId("5def65f7b622fcf79b652126"), 
+        ObjectId("5def6664b622fcf79b6524fa"), 
+        ObjectId("5def6731b622fcf79b652c30"), 
+        ObjectId("5def66e8b622fcf79b6529d6")
+    ],
+    "externalSystem" : {
+        "id" : "c0e0ccbb-380d-42cb-97ab-77b887de9792",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "__v" : 0,
+    "pendingLifecycleStatus" : "Retired"
+}
+------------------------------ROAM-Fax Access Free--------------------------------
+{
+    "_id" : ObjectId("5e69c98caf8a9f0006adffb2"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [ 
+        ObjectId("5d38899883ba2e1cba2de995"), 
+        ObjectId("5d3889a283ba2e1cba2de9ae"), 
+        ObjectId("5d4bdbff528c2425c23289b5"), 
+        ObjectId("5d4be317528c2425c2329cba")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852"), 
+        ObjectId("5d38892b83ba2e1cba2de87b")
+    ],
+    "attachment" : [ 
+        ObjectId("5d3e825d18adf5f90f1ca862")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "ROAM-Fax Access Free",
+    "description" : "Do not remove",
+    "code" : "PO86521",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:33:12.580Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "a10167d2-259b-4482-ab16-44775a6e5ec5",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:33:00.389Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
+------------------------------VEHT-APN PKG-Vehicle Track Pkg--------------------------------
+{
+    "_id" : ObjectId("5e69c7d6af8a9f0006adffac"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [ 
+        ObjectId("5d3889a283ba2e1cba2de9ae"), 
+        ObjectId("5d4be317528c2425c2329cba"), 
+        ObjectId("5d38899883ba2e1cba2de995")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852"), 
+        ObjectId("5d38892b83ba2e1cba2de87b")
+    ],
+    "attachment" : [ 
+        ObjectId("5d3e832d18adf5f90f1caac6")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "VEHT-APN PKG-Vehicle Track Pkg",
+    "description" : "Do not remove",
+    "code" : "PO50145",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:26:15.780Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "b8e82838-e696-46dc-bb3c-9a5b9ee6604c",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:25:42.381Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
+------------------------------LCA-Individual National Package--------------------------------
+{
+    "_id" : ObjectId("5e69ca3faf8a9f0006adffb8"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [ 
+        ObjectId("5d3889a283ba2e1cba2de9ae"), 
+        ObjectId("5d38899883ba2e1cba2de995"), 
+        ObjectId("5d4bdbff528c2425c23289b5"), 
+        ObjectId("5d4be317528c2425c2329cba")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852"), 
+        ObjectId("5d38892b83ba2e1cba2de87b")
+    ],
+    "attachment" : [ 
+        ObjectId("5d3e838218adf5f90f1caba3")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "LCA-Individual National Package",
+    "description" : "Do Not Remove",
+    "code" : "PO34871",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:36:12.782Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "e865d377-d7af-4d70-a179-96048596f46d",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:35:59.300Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
+------------------------------IND-DATA_PKG-6GB Capping--------------------------------
+{
+    "_id" : ObjectId("5e69cae3af8a9f0006adffbe"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [],
+    "channel" : [],
+    "attachment" : [ 
+        ObjectId("5d3e83a118adf5f90f1cabf4")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "IND-DATA_PKG-6GB Capping",
+    "description" : "Do Not Remove",
+    "code" : "PO80674",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:38:51.993Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "1858c961-b105-4781-a567-6b40703f4ee0",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:38:43.804Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
+------------------------------GPR_P-DATA PKG-400MB Capping--------------------------------
+{
+    "_id" : ObjectId("5e69cb72af8a9f0006adffc4"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [ 
+        ObjectId("5d38899883ba2e1cba2de995"), 
+        ObjectId("5d3889a283ba2e1cba2de9ae"), 
+        ObjectId("5d4be317528c2425c2329cba"), 
+        ObjectId("5d4bdbff528c2425c23289b5")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852"), 
+        ObjectId("5d38892b83ba2e1cba2de87b")
+    ],
+    "attachment" : [ 
+        ObjectId("5d3e83cf18adf5f90f1cac6a")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079"), 
+        ObjectId("5de8e60ad19809000b0ef06c")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "GPR_P-DATA PKG-400MB Capping",
+    "description" : "Do not remove",
+    "code" : "PO17585",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:41:15.799Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "dd85e91c-3d13-4741-9a19-399afd516981",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:41:06.278Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
+------------------------------M2M PACKAGE--------------------------------
+{
+    "_id" : ObjectId("5e69cbcaaf8a9f0006adffca"),
+    "allowedProductAction" : {
+        "channels" : []
+    },
+    "businessType" : [ 
+        "Postpaid"
+    ],
+    "place" : [],
+    "category" : [ 
+        ObjectId("5ce67563a9060a9e0944ad57"), 
+        ObjectId("5ce67579a9060a9e0944ad80"), 
+        ObjectId("5ce6758aa9060a9e0944ad93")
+    ],
+    "agreement" : [],
+    "marketSegment" : [ 
+        ObjectId("5d38899883ba2e1cba2de995"), 
+        ObjectId("5d3889a283ba2e1cba2de9ae"), 
+        ObjectId("5d4be317528c2425c2329cba"), 
+        ObjectId("5d4bdbff528c2425c23289b5")
+    ],
+    "channel" : [ 
+        ObjectId("5d38891b83ba2e1cba2de852")
+    ],
+    "attachment" : [ 
+        ObjectId("5d3e82f618adf5f90f1ca9f3")
+    ],
+    "productOfferingTerm" : [],
+    "productOfferingPrice" : [ 
+        ObjectId("5de90130d19809000b0ef079"), 
+        ObjectId("5de8e60ad19809000b0ef06c")
+    ],
+    "bundledProductOffering" : [],
+    "relatedParty" : [],
+    "name" : "M2M PACKAGE",
+    "description" : "Do Not Remove",
+    "code" : "PO26850",
+    "isBundle" : false,
+    "isSellable" : true,
+    "version" : "1.0",
+    "@type" : "SimpleProductOffering",
+    "@baseType" : "ProductOffering",
+    "validFor" : {
+        "startDateTime" : ISODate("2020-03-12T00:00:00.000Z"),
+        "endDateTime" : ISODate("2024-03-13T00:00:00.000Z")
+    },
+    "lifecycleStatus" : "Launched",
+    "lastUpdate" : ISODate("2020-03-12T05:42:41.677Z"),
+    "productSpecification" : ObjectId("5de90130d19809000b0ef07c"),
+    "prodSpecCharValueUse" : [],
+    "externalSystem" : {
+        "id" : "ce2cd49e-f9fe-45b2-a7d6-4361679f11f7",
+        "@system" : "NGB",
+        "@type" : "MandatoryOffering",
+        "@baseType" : "Offering"
+    },
+    "createdAt" : ISODate("2020-03-12T05:42:34.581Z"),
+    "__v" : 0,
+    "pendingLifecycleStatus" : ""
+}
